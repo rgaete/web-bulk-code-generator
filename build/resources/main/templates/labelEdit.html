@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Notes</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="container">
+
+    <a href="/"><h1>Labels</h1></a>
+
+    <form class="form-group" action="/labelEdit" th:action="@{/labelEdit}" method="post">
+        <div class="form-group">
+            <label for="code">Codigo</label>
+            <input type="text" class="form-control" id="code" th:field="${label.code}" />
+        </div>
+        <div class="form-group">
+            <label for="description">Descripcion</label>
+            <input type="text" class="form-control" id="description" th:field="${label.description}" />
+        </div>
+        <div class="form-group">
+            <label for="price">Precio</label>
+            <input type="text" class="form-control" id="price" th:field="${label.price}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
+        <a href="#" th:href="@{/}" class="btn btn-danger" role="button">Cancel</a>
+    </form>
+
+</div>
+
+</body>
+</html>
