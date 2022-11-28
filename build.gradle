@@ -1,0 +1,33 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+
+group = 'com.rgfp.psd'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.webjars:jquery:2.1.4'
+	implementation 'org.webjars:bootstrap:3.3.7'
+	implementation 'com.h2database:h2'
+	implementation 'com.pnuema.java:barcode:1.13'
+	implementation 'org.apache.poi:poi:5.2.3'
+	implementation 'org.apache.poi:poi-ooxml:5.2.3'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
