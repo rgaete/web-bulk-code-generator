@@ -1,4 +1,4 @@
-package com.rgfp.psd.logbook.service;
+package com.rg.barcode.service;
 
 import com.pnuema.java.barcode.Barcode;
 import com.pnuema.java.barcode.EncodingType;
@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
-import com.rgfp.psd.logbook.domain.Label;
+import com.rg.barcode.domain.Label;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

@@ -1,6 +1,7 @@
-package com.rgfp.psd.logbook.controller;
+package com.rg.barcode.controller;
 
-import com.rgfp.psd.logbook.service.LabelService;
+import com.rg.barcode.domain.Label;
+import com.rg.barcode.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.rgfp.psd.logbook.service.LabelService;
-import com.rgfp.psd.logbook.domain.Label;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

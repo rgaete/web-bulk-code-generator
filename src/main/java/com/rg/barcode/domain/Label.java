@@ -1,4 +1,4 @@
-package com.rgfp.psd.logbook.domain;
+package com.rg.barcode.domain;
 public class Label {
 
     private String code;

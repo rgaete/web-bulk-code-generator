@@ -1,4 +1,4 @@
-package com.rgfp.psd.logbook;
+package com.rg.barcode;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
