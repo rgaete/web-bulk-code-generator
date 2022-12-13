@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'rg-logbook-app-rgps'
+rootProject.name = 'web-bulk-code-generator'
