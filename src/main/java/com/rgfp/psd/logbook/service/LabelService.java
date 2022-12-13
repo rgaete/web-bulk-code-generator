@@ -2,13 +2,13 @@ package com.rgfp.psd.logbook.service;
 
 import com.pnuema.java.barcode.Barcode;
 import com.pnuema.java.barcode.EncodingType;
-import com.rgfp.psd.logbook.domain.Label;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import com.rgfp.psd.logbook.domain.Label;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,21 +18,21 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @Service
 public class LabelService {
 
     private List<Label> allLabels;
 
-    List<Label> getAllNotes() {
+    List<Label> getAllLabels() {
         return allLabels;
     }
 
     public List<Label> generateLabel(String fileLocation) throws IOException, ParseException {
         ArrayList<Label> labels = new ArrayList<>();
-        FileInputStream file = new FileInputStream(new File(fileLocation));
+        FileInputStream file = new FileInputStream(new File("uploads/files/" + fileLocation));
         Workbook workbook = new XSSFWorkbook(file);
         Sheet sheet = workbook.getSheetAt(0);
 
@@ -50,14 +50,14 @@ public class LabelService {
 
         for (Map.Entry entrySet: data.entrySet()) {
             if((int)entrySet.getKey() > 0){
-                ArrayList<String> lista = ((ArrayList<String>) entrySet.getValue());
+                ArrayList<String> values = ((ArrayList<String>) entrySet.getValue());
                 Label label = new Label();
-                String code = lista.get(1).trim().replace("\"","");
-                Number price = NumberFormat.getInstance().parse(lista.get(4));
+                String code = values.get(1).trim().replace("\"","");
+                Number price = NumberFormat.getInstance().parse(values.get(4));
                 label.setCode(code);
-                String description = lista.get(3);
+                String description = values.get(3);
                 label.setDescription(description);
-                label.setPrice(price.toString());
+                label.setPrice(price);
                 labels.add(label);
             }
         }
@@ -125,8 +125,8 @@ public class LabelService {
 
             graphics.setFont(fontPrice);
             fontMetrics = graphics.getFontMetrics();
-
-            String priceString = "$" + label.getPrice();
+            String priceString = numberFormat.format(label.getPrice());
+            //String priceString = "$" + label.getPrice().toString();
             graphics.drawString(priceString,(300 - fontMetrics.stringWidth(priceString))/2,100 + img.getHeight(null));
             //graphics.drawString(priceString,310 + (310 - fontMetrics.stringWidth(priceString))/2,100 + image.getHeight(null));
             //graphics.drawString(priceString,625 + (310 - fontMetrics.stringWidth(priceString))/2,100 + image.getHeight(null));
@@ -134,7 +134,9 @@ public class LabelService {
             BufferedImage bufferedImageSmall = new BufferedImage(widthImageSmall,heightImageSmall,BufferedImage.TYPE_INT_BGR);
             bufferedImageSmall.getGraphics().drawImage(bufferedImage.getScaledInstance(widthImageSmall,heightImageSmall,BufferedImage.SCALE_REPLICATE),0,0,null);
 
-            ImageIO.write(bufferedImage, "PNG", new File("images/" + label.getImageUrl()));
+            File output = new File("uploads/" + label.getImageUrl());
+            System.out.println("Image Path: " + output.getPath());
+            ImageIO.write(bufferedImage, "PNG", output);
             //ImageIO.write(bufferedImageSmall, extension, new File(fileDestination));
 
         } catch (IOException e) {

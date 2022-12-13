@@ -1,6 +1,5 @@
 package com.rgfp.psd.logbook.controller;
 
-import com.rgfp.psd.logbook.domain.Label;
 import com.rgfp.psd.logbook.service.LabelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.rgfp.psd.logbook.service.LabelService;
+import com.rgfp.psd.logbook.domain.Label;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,10 +31,16 @@ public class LabelController {
 
     // displays all notes
     @RequestMapping(value={"/", "labels"})
-    public String noteList(Model model, @RequestParam(required = false, name = "file") String file) throws IOException, ParseException {
+    public String noteList(Model model, @RequestParam(required = false, name = "file") String fileName) {
+
         List<Label> labels = null;
-        if(file != null){
-            labels = labelService.findAllFromFileName(file);
+        if(fileName != null){
+            try {
+                labels = labelService.findAllFromFileName(fileName);
+                model.addAttribute("message", " Archivo cargado correctamente: " + fileName);
+            } catch (ParseException | IOException e) {
+                model.addAttribute("message", " Ocurrió un error al leer el archivo: " + fileName);
+            }
         }
         else {
             labels = null;
@@ -71,14 +79,15 @@ public class LabelController {
 
         // save the file on the local file system
         try {
-            Path path = Paths.get(fileName);
+            Path path = Paths.get("uploads/files/" + fileName);
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
+            attributes.addFlashAttribute("message", "Ocurrió un error al cargar el archivo " + fileName + '!');
         }
 
         // return success response
-        attributes.addFlashAttribute("message", "You successfully uploaded " + fileName + '!');
+        attributes.addFlashAttribute("message", " Archivo cargado correctamente: " + fileName + '!');
 
         return "redirect:/?file=" + fileName;
     }

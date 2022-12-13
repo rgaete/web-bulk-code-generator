@@ -123,7 +123,7 @@ public class GeneratorController {
                 String code = lista.get(1).trim().replace("\"","").replace(".0","");
                 Image img = barcode.encode(EncodingType.CODE128A, code);
                 img = img.getScaledInstance(img.getWidth(null),80,BufferedImage.SCALE_REPLICATE);
-                savePic(img,"PNG","images/Producto_" + code + ".png", code, lista.get(3), NumberFormat.getInstance().parse(lista.get(4)));
+                savePic(img,"PNG","uploads/images/Producto_" + code + ".png", code, lista.get(3), NumberFormat.getInstance().parse(lista.get(4)));
             }
         }
     }
@@ -189,7 +189,7 @@ public class GeneratorController {
 
             ImageIO.write(bufferedImage, extension, new File(fileDestination));
             //ImageIO.write(bufferedImageSmall, extension, new File(fileDestination));
-            System.out.println("BIGMARKET WIDTH: " + (widthImage - fontMetrics.stringWidth(TITLE))/2 + " W: " + widthImage + "Font H: " + fontMetrics.getHeight() + "BC W: " + image.getWidth(null));
+            //System.out.println("BIGMARKET WIDTH: " + (widthImage - fontMetrics.stringWidth(TITLE))/2 + " W: " + widthImage + "Font H: " + fontMetrics.getHeight() + "BC W: " + image.getWidth(null));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

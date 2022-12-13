@@ -3,7 +3,7 @@ public class Label {
 
     private String code;
     private String description;
-    private String price;
+    private Number price;
 
     private String imageUrl;
 
@@ -31,11 +31,11 @@ public class Label {
         this.description = description;
     }
 
-    public String getPrice() {
+    public Number getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Number price) {
         this.price = price;
     }
 }

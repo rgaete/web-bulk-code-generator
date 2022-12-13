@@ -19,7 +19,7 @@
     <meta charset="utf-8">
 
     <h1>
-        <a href="/">Labels</a>
+        <a href="/">Etiquetas</a>
     </h1>
 
     <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
@@ -29,6 +29,7 @@
         <button type="submit" class="btn btn-primary">Upload File</button>
     </form>
 
+    <p id="message" th:text="${message}" />
     <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -39,9 +40,9 @@
         </thead>
         <tbody>
         <tr th:each="label : ${labelList}">
-            <td th:text="${label.code}"></td>
-            <td th:text="${label.description}"></td>
-            <td th:text="${label.price}"></td>
+            <td style="text-align: right" th:text="${label.code}"></td>
+            <td style="text-align: right" th:text="${label.description}"></td>
+            <td style="text-align: right" th:text="${label.price}"></td>
         </tr>
         </tbody>
     </table>
