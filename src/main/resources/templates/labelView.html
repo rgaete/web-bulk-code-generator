@@ -16,7 +16,7 @@
 <body>
 <div class="container">
 
-    <a href="/"><h1>Labels</h1></a>
+    <a href="/"><h1>Etiquetas</h1></a>
 
     <label for="code">Codigo</label>
     <p id="code" th:text="${label.code}" />
@@ -27,7 +27,10 @@
     <label for="price">Content</label>
     <p id="price" th:text="${label.price}" />
 
-    <img th:src="@{'uploads/' + ${label.imageUrl}}"/>
+    <label for="imageUrl">Content</label>
+    <p id="imageUrl" th:text="${label.imageUrl}" />
+
+    <img th:src="@{'uploads/images/' + ${label.imageUrl}}"/>
 
 
     </form>

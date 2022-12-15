@@ -2,11 +2,13 @@ package com.rg.barcode.service;
 
 import com.pnuema.java.barcode.Barcode;
 import com.pnuema.java.barcode.EncodingType;
+import com.rg.barcode.repository.LabelRepository;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.rg.barcode.domain.Label;
 
@@ -25,6 +27,9 @@ import java.util.*;
 public class LabelService {
 
     private List<Label> allLabels;
+
+    @Autowired
+    private LabelRepository labelRepository;
 
     List<Label> getAllLabels() {
         return allLabels;
@@ -58,9 +63,13 @@ public class LabelService {
                 String description = values.get(3);
                 label.setDescription(description);
                 label.setPrice(price);
+                label.setImageUrl("Producto_" + code + ".png");
                 labels.add(label);
+                labelRepository.save(label);
             }
         }
+
+        labels.stream().forEach(label -> {generateImageFromLabel(label);});
 
         return labels;
     }
@@ -68,6 +77,11 @@ public class LabelService {
     public List<Label> findAllFromFileName(String filename) throws IOException, ParseException {
         List<Label> labelList = generateLabel(filename);
         return labelList;
+    }
+
+    public String saveAllFromFileName(String filename) throws IOException, ParseException {
+        List<Label> labelList = generateLabel(filename);
+        return "Success!!";
     }
 
     public void generateImageFromLabel(Label label){
@@ -134,7 +148,7 @@ public class LabelService {
             BufferedImage bufferedImageSmall = new BufferedImage(widthImageSmall,heightImageSmall,BufferedImage.TYPE_INT_BGR);
             bufferedImageSmall.getGraphics().drawImage(bufferedImage.getScaledInstance(widthImageSmall,heightImageSmall,BufferedImage.SCALE_REPLICATE),0,0,null);
 
-            File output = new File("uploads/" + label.getImageUrl());
+            File output = new File("uploads/images/" + label.getImageUrl());
             System.out.println("Image Path: " + output.getPath());
             ImageIO.write(bufferedImage, "PNG", output);
             //ImageIO.write(bufferedImageSmall, extension, new File(fileDestination));
@@ -145,4 +159,11 @@ public class LabelService {
         }
     }
 
+    public List<Label> findAll() {
+        return (List<Label>) labelRepository.findAll();
+    }
+
+    public Optional<Label> getLabelById(Long id) {
+        return labelRepository.findById(id);
+    }
 }

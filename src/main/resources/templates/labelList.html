@@ -43,6 +43,7 @@
             <td style="text-align: right" th:text="${label.code}"></td>
             <td style="text-align: right" th:text="${label.description}"></td>
             <td style="text-align: right" th:text="${label.price}"></td>
+            <td><a th:href="@{/labelView/{id}(id=${label.id})}">view</a></td>
         </tr>
         </tbody>
     </table>
