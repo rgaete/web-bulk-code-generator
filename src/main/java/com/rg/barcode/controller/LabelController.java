@@ -81,7 +81,7 @@ public class LabelController {
         label.setImageUrl("Producto_" + label.getCode() + ".png");
         labelService.generateImageFromLabel(label);
         //model.addAttribute("label", noteService.findAll());
-        return "redirect:/labelView";
+        return "labelView";
     }
 
     @PostMapping("/upload")
