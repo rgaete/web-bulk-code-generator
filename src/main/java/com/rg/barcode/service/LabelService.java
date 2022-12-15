@@ -58,6 +58,7 @@ public class LabelService {
                 ArrayList<String> values = ((ArrayList<String>) entrySet.getValue());
                 Label label = new Label();
                 String code = values.get(1).trim().replace("\"","");
+                code = code.substring(0,code.length()-2);
                 Number price = NumberFormat.getInstance().parse(values.get(4));
                 label.setCode(code);
                 String description = values.get(3);
