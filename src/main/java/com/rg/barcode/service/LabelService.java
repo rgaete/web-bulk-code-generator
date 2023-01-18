@@ -55,17 +55,24 @@ public class LabelService {
 
         for (Map.Entry entrySet: data.entrySet()) {
             if((int)entrySet.getKey() > 0){
-                ArrayList<String> values = ((ArrayList<String>) entrySet.getValue());
-                Label label = new Label();
-                String code = values.get(1).trim().replace("\"","").replace(".0","");
-                Number price = NumberFormat.getInstance().parse(values.get(4));
-                label.setCode(code);
-                String description = values.get(3);
-                label.setDescription(description);
-                label.setPrice(price);
-                label.setImageUrl("Producto_" + code + ".png");
-                labels.add(label);
-                labelRepository.save(label);
+                try {
+                    ArrayList<String> values = ((ArrayList<String>) entrySet.getValue());
+                    Label label = new Label();
+                    String code = values.get(1).trim().replace("\"","").replace(".0","");
+                    if(code!= "") {
+                        System.out.println("CODE: " + code);
+                        Number price = NumberFormat.getInstance().parse(values.get(4));
+                        label.setCode(code);
+                        String description = values.get(3);
+                        label.setDescription(description);
+                        label.setPrice(price);
+                        label.setImageUrl("Producto_" + code + ".png");
+                        labels.add(label);
+                        labelRepository.save(label);
+                    }
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -100,13 +107,11 @@ public class LabelService {
         Graphics graphics = bufferedImage.getGraphics();
 
         Locale chile = new Locale("es", "CL");
-        Currency pesos = Currency.getInstance(chile);
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(chile);
 
 
         try {
             graphics.setColor(Color.WHITE);
-            Font fontTitle = new Font(Font.SERIF, Font.PLAIN, 25);
             Font fontCode = new Font(Font.SERIF, Font.PLAIN,25);
             Font fontDesc = new Font(Font.SERIF, Font.PLAIN, 20);
             Font fontPrice = new Font(Font.SERIF, Font.BOLD,25);
@@ -114,44 +119,32 @@ public class LabelService {
             graphics.fillRect(0,0,widthImage,heightImage);
             graphics.setColor(Color.BLACK);
 
-            //graphics.setFont(fontTitle);
             FontMetrics fontMetrics = graphics.getFontMetrics();
-            //graphics.drawString(TITLE,(widthImage - fontMetrics.stringWidth(TITLE))/2, fontMetrics.getHeight() + 5);
 
             graphics.drawImage(img, 5,  10, null);
-            //graphics.drawImage(image, 315,  10, null);
-            //graphics.drawImage(image, 625,  10, null);
 
             graphics.setFont(fontCode);
             fontMetrics = graphics.getFontMetrics();
             graphics.drawString(code,(300 - fontMetrics.stringWidth(code))/2,40 + img.getHeight(null));
-            //graphics.drawString(code,310 + (310 - fontMetrics.stringWidth(code))/2,40 + image.getHeight(null));
-            //graphics.drawString(code,625 + (305 - fontMetrics.stringWidth(code))/2,40 + image.getHeight(null));
+
 
             graphics.setFont(fontDesc);
             fontMetrics = graphics.getFontMetrics();
             String description = label.getDescription();
             description = (description.length() < 12 ) ? description :  description.substring(0,12);
             graphics.drawString(description,(300 - fontMetrics.stringWidth(description))/2,65 + img.getHeight(null));
-            //graphics.drawString(description,310 + (310 - fontMetrics.stringWidth(description))/2,65 + image.getHeight(null));
-            //graphics.drawString(description,625 + (310 - fontMetrics.stringWidth(description))/2,65 + image.getHeight(null));
-
 
             graphics.setFont(fontPrice);
             fontMetrics = graphics.getFontMetrics();
             String priceString = numberFormat.format(label.getPrice());
-            //String priceString = "$" + label.getPrice().toString();
             graphics.drawString(priceString,(300 - fontMetrics.stringWidth(priceString))/2,100 + img.getHeight(null));
-            //graphics.drawString(priceString,310 + (310 - fontMetrics.stringWidth(priceString))/2,100 + image.getHeight(null));
-            //graphics.drawString(priceString,625 + (310 - fontMetrics.stringWidth(priceString))/2,100 + image.getHeight(null));
 
             BufferedImage bufferedImageSmall = new BufferedImage(widthImageSmall,heightImageSmall,BufferedImage.TYPE_INT_BGR);
             bufferedImageSmall.getGraphics().drawImage(bufferedImage.getScaledInstance(widthImageSmall,heightImageSmall,BufferedImage.SCALE_REPLICATE),0,0,null);
 
+            label.setImageUrl("Producto_" + label.getCode() + ".png");
             File output = new File("uploads/images/" + label.getImageUrl());
-            System.out.println("Image Path: " + output.getPath());
             ImageIO.write(bufferedImage, "PNG", output);
-            //ImageIO.write(bufferedImageSmall, extension, new File(fileDestination));
 
         } catch (IOException e) {
             // TODO Auto-generated catch block

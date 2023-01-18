@@ -42,6 +42,7 @@ public class LabelController {
                 labels = labelService.findAllFromFileName(fileName);
                 model.addAttribute("message", " Archivo cargado correctamente: " + fileName);
             } catch (ParseException | IOException e) {
+                System.out.println(e.getMessage());
                 model.addAttribute("message", " Ocurrió un error al leer el archivo: " + fileName);
             }
         }
@@ -78,9 +79,7 @@ public class LabelController {
 
     @RequestMapping(value="/labelEdit", method = RequestMethod.POST)
     public String labelEdit(Model model, Label label) {
-        label.setImageUrl("Producto_" + label.getCode() + ".png");
         labelService.generateImageFromLabel(label);
-        //model.addAttribute("label", noteService.findAll());
         return "labelView";
     }
 
